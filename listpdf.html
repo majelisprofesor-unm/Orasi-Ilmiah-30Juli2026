@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perpustakaan Flipbook</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      font-family: system-ui, -apple-system, sans-serif;
+      color: #eee;
+    }
+
+    /* ========== SIDEBAR ========== */
+    .sidebar {
+      width: 280px;
+      background: #16213e;
+      border-right: 1px solid #0f3460;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #0f3460;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .book-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .book-item {
+      padding: 12px 14px;
+      margin-bottom: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      border: 1px solid transparent;
+    }
+
+    .book-item:hover {
+      background: #0f3460;
+    }
+
+    .book-item.active {
+      background: #e94560;
+      color: white;
+      border-color: #e94560;
+    }
+
+    /* ========== MAIN AREA ========== */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .main-header {
+      padding: 14px 24px;
+      background: #16213e;
+      border-bottom: 1px solid #0f3460;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .main-header h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    #book {
+      flex: 1;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      height: calc(100vh - 60px);
+
+      --fb-bg: transparent;
+      --fb-paper: #fffaf0;
+      --fb-control-bg: rgba(20, 20, 30, 0.8);
+      --fb-control-fg: #ffffff;
+      --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 220px;
+      }
+      .main { height: auto; min-height: 70vh; }
+      #book { height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== SIDEBAR DAFTAR BUKU ========== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">📚 Orasi Ilmiah - 30 Juli 2026</div>
+    <div class="book-list" id="bookList">
+      <!-- Akan diisi otomatis dari JavaScript -->
+    </div>
+  </aside>
+
+  <!-- ========== AREA FLIPBOOK ========== -->
+  <main class="main">
+    <div class="main-header">
+      <h2 id="currentTitle">Pilih buku di sebelah kiri</h2>
+      <span style="font-size: 0.85rem; opacity: 0.7;">Geser pojok halaman untuk membalik</span>
+    </div>
+
+    <div id="book"></div>
+  </main>
+
+  <!-- Library -->
+  <script src="https://cdn.jsdelivr.net/gh/SympleNZ/PDFlipbook@main/pdflipbook.js"></script>
+
+  <script>
+    // ============================================
+    //  DAFTAR 11 BUKU KAMU
+    //  Ganti nama file & judul sesuai yang ada
+    // ============================================
+    const books = [
+     
+      { title: "Buku 7 - Judul Ketujuh",  file: "sultan.pdf" },
+      { title: "Buku 8 - Judul Kedelapan",file: "maemuna.pdf" },
+      { title: "Buku 9 - Judul Kesembilan",file: "kamaruddin.pdf" },
+      { title: "Buku 10 - Judul Kesepuluh",file: "erma.pdf" },
+      { title: "Widya Karmila Sari Achmad - PEDAGOGI SOSIAL TRANSFORMATIF DALAM PEMBELAJARAN IPS SEKOLAH DASAR: MEMBANGUN GENERASI BERKARAKTER, BERBUDAYA, DAN BERWAWASAN GLOBAL",file: "widya.pdf" }
+    ];
+
+    let currentBook = null;
+
+    // Membuat daftar buku di sidebar
+    const bookListEl = document.getElementById('bookList');
+    const currentTitleEl = document.getElementById('currentTitle');
+
+    books.forEach((book, index) => {
+      const item = document.createElement('div');
+      item.className = 'book-item';
+      item.textContent = book.title;
+      item.dataset.index = index;
+
+      item.addEventListener('click', () => {
+        // Hapus active dari semua
+        document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
+        item.classList.add('active');
+
+        loadBook(book);
+      });
+
+      bookListEl.appendChild(item);
+    });
+
+    // Fungsi memuat buku
+    function loadBook(book) {
+      // Hapus instance sebelumnya
+      if (currentBook) {
+        currentBook.destroy();
+        currentBook = null;
+      }
+
+      currentTitleEl.textContent = book.title;
+
+      currentBook = PDFlipbook.create(document.getElementById('book'), {
+        url: book.file,
+        duration: 550,
+        cornerFold: true,
+        displayMode: 'auto',
+        controls: true,
+        arrows: true,
+        pageNumbers: true,
+        zoomSteps: [1, 1.5, 2, 2.5],
+        shadow: 'always'
+      });
+    }
+
+    // Opsional: langsung load buku pertama saat dibuka
+    // loadBook(books[0]);
+    // document.querySelector('.book-item').classList.add('active');
+  </script>
+</body>
+</html>
