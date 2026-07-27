@@ -8,37 +8,36 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --unm-gold: #F5C518;          /* Kuning keemasan utama */
-      --unm-gold-dark: #D4A017;     /* Emas lebih gelap */
-      --unm-gold-light: #FFE566;    /* Emas terang */
-      --unm-brown: #5C3A00;         /* Coklat tua untuk kontras */
-      --sidebar-bg: #3D2B00;        /* Sidebar gelap keemasan */
+      --unm-gold: #C9A227;          /* Emas utama — lebih soft */
+      --unm-gold-dark: #9A7B1A;     /* Emas gelap */
+      --unm-gold-light: #E8D48B;    /* Emas soft */
+      --bg-main: #2C2416;           /* Coklat gelap hangat */
+      --sidebar-bg: #1F1A12;        /* Sidebar lebih gelap */
     }
 
     body {
-      background: linear-gradient(160deg, #F5C518 0%, #E8B923 40%, #D4A017 100%);
+      background: #2C2416;          /* Latar utama gelap keemasan */
       min-height: 100vh;
       display: flex;
       font-family: system-ui, -apple-system, sans-serif;
-      color: #222;
+      color: #f0e6d0;
     }
 
     /* ========== SIDEBAR ========== */
     .sidebar {
       width: 300px;
       background: var(--sidebar-bg);
-      border-right: 3px solid var(--unm-gold);
+      border-right: 2px solid var(--unm-gold-dark);
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
-      color: #fff;
     }
 
     .sidebar-header {
       padding: 20px;
-      background: linear-gradient(135deg, #5C3A00, #3D2B00);
-      border-bottom: 2px solid var(--unm-gold);
+      background: linear-gradient(145deg, #3A2F1C, #1F1A12);
+      border-bottom: 2px solid var(--unm-gold-dark);
       font-size: 1.05rem;
       font-weight: 700;
       text-align: center;
@@ -61,20 +60,21 @@
       font-size: 0.92rem;
       line-height: 1.35;
       border: 1px solid transparent;
-      background: rgba(255,255,255,0.06);
+      background: rgba(201, 162, 39, 0.08);
+      color: #e8d9b0;
     }
 
     .book-item:hover {
-      background: rgba(245, 197, 24, 0.25);
-      border-color: var(--unm-gold);
+      background: rgba(201, 162, 39, 0.18);
+      border-color: var(--unm-gold-dark);
     }
 
     .book-item.active {
       background: var(--unm-gold);
-      color: #3D2B00;
+      color: #1F1A12;
       font-weight: 600;
       border-color: var(--unm-gold-light);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
 
     /* ========== MAIN AREA ========== */
@@ -83,12 +83,13 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
+      background: #2C2416;
     }
 
     .main-header {
       padding: 14px 24px;
-      background: rgba(61, 43, 0, 0.92);
-      border-bottom: 3px solid var(--unm-gold);
+      background: #1F1A12;
+      border-bottom: 2px solid var(--unm-gold-dark);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -110,9 +111,9 @@
 
       --fb-bg: transparent;
       --fb-paper: #fffaf0;
-      --fb-control-bg: rgba(61, 43, 0, 0.85);
-      --fb-control-fg: #F5C518;
-      --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      --fb-control-bg: rgba(31, 26, 18, 0.9);
+      --fb-control-fg: #E8D48B;
+      --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
     }
 
     /* ========== WELCOME SCREEN ========== */
@@ -126,8 +127,7 @@
       text-align: center;
       padding: 40px 20px;
       z-index: 10;
-      background: rgba(255, 250, 230, 0.55);
-      backdrop-filter: blur(4px);
+      background: radial-gradient(ellipse at center, #3A2F1C 0%, #2C2416 70%);
     }
 
     .welcome.hidden {
@@ -135,22 +135,23 @@
     }
 
     .welcome img {
-      width: 160px;
+      width: 140px;
       height: auto;
       margin-bottom: 24px;
-      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4));
     }
 
     .welcome h1 {
-      font-size: 1.6rem;
-      color: #3D2B00;
+      font-size: 1.55rem;
+      color: var(--unm-gold-light);
       margin-bottom: 10px;
       font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     .welcome p {
       font-size: 1.05rem;
-      color: #5C3A00;
+      color: #cbb98a;
       max-width: 420px;
       line-height: 1.5;
     }
@@ -158,11 +159,11 @@
     .welcome .hint {
       margin-top: 28px;
       font-size: 0.9rem;
-      color: #7A5C00;
-      background: rgba(245, 197, 24, 0.35);
-      padding: 8px 18px;
+      color: #e8d9b0;
+      background: rgba(201, 162, 39, 0.15);
+      padding: 9px 20px;
       border-radius: 30px;
-      border: 1px solid var(--unm-gold);
+      border: 1px solid var(--unm-gold-dark);
     }
 
     /* Responsive */
@@ -175,8 +176,8 @@
       }
       .main { height: auto; min-height: 65vh; }
       #book { height: 65vh; }
-      .welcome h1 { font-size: 1.3rem; }
-      .welcome img { width: 120px; }
+      .welcome h1 { font-size: 1.25rem; }
+      .welcome img { width: 110px; }
     }
   </style>
 </head>
@@ -198,13 +199,12 @@
   <main class="main">
     <div class="main-header">
       <h2 id="currentTitle">Selamat Datang</h2>
-      <span style="font-size: 0.85rem; opacity: 0.8;">Geser pojok halaman untuk membalik</span>
+      <span style="font-size: 0.85rem; opacity: 0.75;">Geser pojok halaman untuk membalik</span>
     </div>
 
     <div id="book">
-      <!-- Welcome screen (tampil sebelum buku dipilih) -->
+      <!-- Welcome screen -->
       <div class="welcome" id="welcomeScreen">
-        <!-- Logo UNM (bisa diganti dengan file lokal jika ada) -->
         <img src="https://unm.ac.id/wp-content/uploads/2021/07/logo-unm.png" 
              alt="Logo Universitas Negeri Makassar"
              onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/8/8e/Logo_UNM.png/200px-Logo_UNM.png'">
@@ -220,9 +220,6 @@
   <script src="https://cdn.jsdelivr.net/gh/SympleNZ/PDFlipbook@main/pdflipbook.js"></script>
 
   <script>
-    // ============================================
-    //  DAFTAR BUKU — sesuaikan judul & nama file
-    // ============================================
     const books = [
       { title: "Sultan - Pembelajaran Literasi Kritis Sebagai Jalan Pemberdayaan: Mewujudkan Peserta Didik Menjadi Pembaca Berdaulat Di Era Infodemik",  file: "sultan.pdf" },
       { title: "Maemuna Muhayyang  - Eksistensi Dan Dinamika Honorifik Hi dalam Ekologi Kesantunan Masyarakat Bugis Tala, Pangkep",file: "maemuna.pdf" },
@@ -236,7 +233,6 @@
     const currentTitleEl = document.getElementById('currentTitle');
     const welcomeScreen = document.getElementById('welcomeScreen');
 
-    // Buat daftar buku
     books.forEach((book, index) => {
       const item = document.createElement('div');
       item.className = 'book-item';
@@ -253,7 +249,6 @@
     });
 
     function loadBook(book) {
-      // Sembunyikan welcome screen
       welcomeScreen.classList.add('hidden');
 
       if (currentBook) {
@@ -278,4 +273,5 @@
   </script>
 </body>
 </html>
-      
+
+
