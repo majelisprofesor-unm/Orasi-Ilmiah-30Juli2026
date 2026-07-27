@@ -3,61 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perpustakaan Flipbook</title>
+  <title>Orasi Ilmiah - 30 Juli 2026 | UNM</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    :root {
+      --unm-gold: #F5C518;          /* Kuning keemasan utama */
+      --unm-gold-dark: #D4A017;     /* Emas lebih gelap */
+      --unm-gold-light: #FFE566;    /* Emas terang */
+      --unm-brown: #5C3A00;         /* Coklat tua untuk kontras */
+      --sidebar-bg: #3D2B00;        /* Sidebar gelap keemasan */
+    }
+
     body {
-      background: #1a1a2e;
+      background: linear-gradient(160deg, #F5C518 0%, #E8B923 40%, #D4A017 100%);
       min-height: 100vh;
       display: flex;
       font-family: system-ui, -apple-system, sans-serif;
-      color: #eee;
+      color: #222;
     }
 
     /* ========== SIDEBAR ========== */
     .sidebar {
-      width: 280px;
-      background: #16213e;
-      border-right: 1px solid #0f3460;
+      width: 300px;
+      background: var(--sidebar-bg);
+      border-right: 3px solid var(--unm-gold);
       display: flex;
       flex-direction: column;
       height: 100vh;
       overflow: hidden;
+      color: #fff;
     }
 
     .sidebar-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid #0f3460;
-      font-size: 1.1rem;
-      font-weight: 600;
+      padding: 20px;
+      background: linear-gradient(135deg, #5C3A00, #3D2B00);
+      border-bottom: 2px solid var(--unm-gold);
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.4;
+      color: var(--unm-gold-light);
     }
 
     .book-list {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
+      padding: 14px;
     }
 
     .book-item {
-      padding: 12px 14px;
-      margin-bottom: 6px;
-      border-radius: 8px;
+      padding: 13px 15px;
+      margin-bottom: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 0.95rem;
-      line-height: 1.3;
+      font-size: 0.92rem;
+      line-height: 1.35;
       border: 1px solid transparent;
+      background: rgba(255,255,255,0.06);
     }
 
     .book-item:hover {
-      background: #0f3460;
+      background: rgba(245, 197, 24, 0.25);
+      border-color: var(--unm-gold);
     }
 
     .book-item.active {
-      background: #e94560;
-      color: white;
-      border-color: #e94560;
+      background: var(--unm-gold);
+      color: #3D2B00;
+      font-weight: 600;
+      border-color: var(--unm-gold-light);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
     /* ========== MAIN AREA ========== */
@@ -70,16 +87,17 @@
 
     .main-header {
       padding: 14px 24px;
-      background: #16213e;
-      border-bottom: 1px solid #0f3460;
+      background: rgba(61, 43, 0, 0.92);
+      border-bottom: 3px solid var(--unm-gold);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: var(--unm-gold-light);
     }
 
     .main-header h2 {
       font-size: 1.1rem;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     #book {
@@ -88,21 +106,63 @@
       max-width: 1100px;
       margin: 0 auto;
       height: calc(100vh - 60px);
+      position: relative;
 
       --fb-bg: transparent;
       --fb-paper: #fffaf0;
-      --fb-control-bg: rgba(20, 20, 30, 0.8);
-      --fb-control-fg: #ffffff;
-      --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      --fb-control-bg: rgba(61, 43, 0, 0.85);
+      --fb-control-fg: #F5C518;
+      --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
     }
 
-    .empty-state {
-      flex: 1;
+    /* ========== WELCOME SCREEN ========== */
+    .welcome {
+      position: absolute;
+      inset: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #888;
-      font-size: 1.1rem;
+      text-align: center;
+      padding: 40px 20px;
+      z-index: 10;
+      background: rgba(255, 250, 230, 0.55);
+      backdrop-filter: blur(4px);
+    }
+
+    .welcome.hidden {
+      display: none;
+    }
+
+    .welcome img {
+      width: 160px;
+      height: auto;
+      margin-bottom: 24px;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
+    }
+
+    .welcome h1 {
+      font-size: 1.6rem;
+      color: #3D2B00;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .welcome p {
+      font-size: 1.05rem;
+      color: #5C3A00;
+      max-width: 420px;
+      line-height: 1.5;
+    }
+
+    .welcome .hint {
+      margin-top: 28px;
+      font-size: 0.9rem;
+      color: #7A5C00;
+      background: rgba(245, 197, 24, 0.35);
+      padding: 8px 18px;
+      border-radius: 30px;
+      border: 1px solid var(--unm-gold);
     }
 
     /* Responsive */
@@ -111,31 +171,49 @@
       .sidebar {
         width: 100%;
         height: auto;
-        max-height: 220px;
+        max-height: 240px;
       }
-      .main { height: auto; min-height: 70vh; }
-      #book { height: 70vh; }
+      .main { height: auto; min-height: 65vh; }
+      #book { height: 65vh; }
+      .welcome h1 { font-size: 1.3rem; }
+      .welcome img { width: 120px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ========== SIDEBAR DAFTAR BUKU ========== -->
+  <!-- ========== SIDEBAR ========== -->
   <aside class="sidebar">
-    <div class="sidebar-header">📚 Orasi Ilmiah - 30 Juli 2026</div>
+    <div class="sidebar-header">
+      📚 Orasi Ilmiah<br>
+      Pengukuhan Profesor UNM<br>
+      <small style="font-weight:400; opacity:0.85">30 Juli 2026</small>
+    </div>
     <div class="book-list" id="bookList">
-      <!-- Akan diisi otomatis dari JavaScript -->
+      <!-- diisi otomatis -->
     </div>
   </aside>
 
-  <!-- ========== AREA FLIPBOOK ========== -->
+  <!-- ========== MAIN ========== -->
   <main class="main">
     <div class="main-header">
-      <h2 id="currentTitle">Pilih buku di sebelah kiri</h2>
-      <span style="font-size: 0.85rem; opacity: 0.7;">Geser pojok halaman untuk membalik</span>
+      <h2 id="currentTitle">Selamat Datang</h2>
+      <span style="font-size: 0.85rem; opacity: 0.8;">Geser pojok halaman untuk membalik</span>
     </div>
 
-    <div id="book"></div>
+    <div id="book">
+      <!-- Welcome screen (tampil sebelum buku dipilih) -->
+      <div class="welcome" id="welcomeScreen">
+        <!-- Logo UNM (bisa diganti dengan file lokal jika ada) -->
+        <img src="https://unm.ac.id/wp-content/uploads/2021/07/logo-unm.png" 
+             alt="Logo Universitas Negeri Makassar"
+             onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/8/8e/Logo_UNM.png/200px-Logo_UNM.png'">
+        
+        <h1>Orasi Ilmiah<br>Pengukuhan Profesor</h1>
+        <p>Universitas Negeri Makassar<br>30 Juli 2026</p>
+        <div class="hint">← Pilih naskah orasi di sebelah kiri untuk mulai membaca</div>
+      </div>
+    </div>
   </main>
 
   <!-- Library -->
@@ -143,11 +221,9 @@
 
   <script>
     // ============================================
-    //  DAFTAR 11 BUKU KAMU
-    //  Ganti nama file & judul sesuai yang ada
+    //  DAFTAR BUKU — sesuaikan judul & nama file
     // ============================================
     const books = [
-     
       { title: "Sultan - Pembelajaran Literasi Kritis Sebagai Jalan Pemberdayaan: Mewujudkan Peserta Didik Menjadi Pembaca Berdaulat Di Era Infodemik",  file: "sultan.pdf" },
       { title: "Maemuna Muhayyang  - Eksistensi Dan Dinamika Honorifik Hi dalam Ekologi Kesantunan Masyarakat Bugis Tala, Pangkep",file: "maemuna.pdf" },
       { title: "Kamaruddin - Neuro-Semiotic Pedagogy: Rekonstruksi Pedagogi Humanistik Dalam Menjaga Kedaulatan Makna di Era Kecerdasan Artifisial",file: "kamaruddin.pdf" },
@@ -156,11 +232,11 @@
     ];
 
     let currentBook = null;
-
-    // Membuat daftar buku di sidebar
     const bookListEl = document.getElementById('bookList');
     const currentTitleEl = document.getElementById('currentTitle');
+    const welcomeScreen = document.getElementById('welcomeScreen');
 
+    // Buat daftar buku
     books.forEach((book, index) => {
       const item = document.createElement('div');
       item.className = 'book-item';
@@ -168,19 +244,18 @@
       item.dataset.index = index;
 
       item.addEventListener('click', () => {
-        // Hapus active dari semua
         document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
         item.classList.add('active');
-
         loadBook(book);
       });
 
       bookListEl.appendChild(item);
     });
 
-    // Fungsi memuat buku
     function loadBook(book) {
-      // Hapus instance sebelumnya
+      // Sembunyikan welcome screen
+      welcomeScreen.classList.add('hidden');
+
       if (currentBook) {
         currentBook.destroy();
         currentBook = null;
@@ -200,10 +275,7 @@
         shadow: 'always'
       });
     }
-
-    // Opsional: langsung load buku pertama saat dibuka
-    // loadBook(books[0]);
-    // document.querySelector('.book-item').classList.add('active');
   </script>
 </body>
 </html>
+      
