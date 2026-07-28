@@ -335,51 +335,52 @@
       bookListEl.appendChild(item);
     });
 
-    function loadBook(book) {
-      stopSlideshow();
+function loadBook(book) {
+  stopSlideshow();
 
-      if (currentBook) {
-        currentBook.destroy();
-        currentBook = null;
-      }
-
-      currentTitleEl.textContent = book.name;
-
-      currentBook = PDFlipbook.create(document.getElementById('book'), {
-        url: book.file,
-        duration: 550,
-        cornerFold: true,
-        displayMode: 'auto',
-        controls: true,
-        arrows: true,
-        pageNumbers: true,
-        zoomSteps: [1, 1.5, 2, 2.5],
-        shadow: 'always'
-      });
-    }
-
-    // Tombol kembali ke halaman awal (slideshow)
-document.getElementById('btnHome').addEventListener('click', () => {
-  // Hapus flipbook jika ada
   if (currentBook) {
     currentBook.destroy();
     currentBook = null;
   }
 
-  // Hapus class active di daftar buku
+  // Kosongkan dulu
+  const bookEl = document.getElementById('book');
+  bookEl.innerHTML = '';
+
+  currentTitleEl.textContent = book.name;
+
+  currentBook = PDFlipbook.create(bookEl, {
+    url: book.file,
+    duration: 550,
+    cornerFold: true,
+    displayMode: 'auto',
+    controls: true,
+    arrows: true,
+    pageNumbers: true,
+    zoomSteps: [1, 1.5, 2, 2.5],
+    shadow: 'always'
+  });
+}
+
+// Tombol kembali ke halaman awal
+document.getElementById('btnHome').addEventListener('click', () => {
+  if (currentBook) {
+    currentBook.destroy();
+    currentBook = null;
+  }
+
+  // Kosongkan area flipbook
+  document.getElementById('book').innerHTML = '';
+
+  // Hapus active di daftar buku
   document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
 
-  // Tampilkan kembali slideshow
+  // Tampilkan slideshow lagi
   slideshowEl.classList.remove('hidden');
   currentTitleEl.textContent = 'Halaman Depan';
 
-  // Restart slideshow dari awal
+  // Restart slideshow
   slideIndex = 0;
   showSlide(0);
   startSlideshow();
 });
-    // Jalankan slideshow saat halaman dibuka
-    startSlideshow();
-  </script>
-</body>
-</html>
