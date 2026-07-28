@@ -2,25 +2,27 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Orasi Ilmiah - 30 Juli 2026 | UNM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Orasi Ilmiah - Kamis, 30 Juli 2026 | UNM</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --unm-gold: #C9A227;          /* Emas utama — lebih soft */
-      --unm-gold-dark: #9A7B1A;     /* Emas gelap */
-      --unm-gold-light: #E8D48B;    /* Emas soft */
-      --bg-main: #2C2416;           /* Coklat gelap hangat */
-      --sidebar-bg: #1F1A12;        /* Sidebar lebih gelap */
+      --unm-gold: #C9A227;
+      --unm-gold-dark: #9A7B1A;
+      --unm-gold-light: #E8D48B;
+      --bg-main: #2C2416;
+      --sidebar-bg: #1F1A12;
     }
 
     body {
-      background: #2C2416;          /* Latar utama gelap keemasan */
+      background: #2C2416;
       min-height: 100vh;
+      height: 100dvh;
       display: flex;
       font-family: system-ui, -apple-system, sans-serif;
       color: #f0e6d0;
+      overflow: hidden;
     }
 
     /* ========== SIDEBAR ========== */
@@ -30,38 +32,37 @@
       border-right: 2px solid var(--unm-gold-dark);
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
     }
 
     .sidebar-header {
-      padding: 20px;
+      padding: 18px 16px;
       background: linear-gradient(145deg, #3A2F1C, #1F1A12);
       border-bottom: 2px solid var(--unm-gold-dark);
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 700;
       text-align: center;
       line-height: 1.4;
       color: var(--unm-gold-light);
+      flex-shrink: 0;
     }
 
     .book-list {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 12px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .book-item {
-      padding: 11px 14px;
+      padding: 11px 13px;
       margin-bottom: 7px;
       border-radius: 9px;
       cursor: pointer;
       transition: all 0.2s;
-      font-size: 0.65rem;          /* ← lebih kecil */
-      line-height: 1.35;
       border: 1px solid transparent;
       background: rgba(201, 162, 39, 0.08);
-      color: #e8d9b0;
     }
 
     .book-item:hover {
@@ -71,34 +72,66 @@
 
     .book-item.active {
       background: var(--unm-gold);
-      color: #1F1A12;
-      font-weight: 600;
       border-color: var(--unm-gold-light);
       box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
 
-    /* ========== MAIN AREA ========== */
+    .book-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--unm-gold-light);
+      margin-bottom: 3px;
+    }
+
+    .book-title {
+      font-size: 0.74rem;
+      line-height: 1.3;
+      opacity: 0.9;
+      color: #e8d9b0;
+    }
+
+    .book-item.active .book-name,
+    .book-item.active .book-title {
+      color: #1F1A12;
+    }
+
+    .book-item.active .book-title {
+      opacity: 0.85;
+    }
+
+    /* ========== MAIN ========== */
     .main {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      background: #2C2416;
+      height: 100%;
+      min-width: 0;
     }
 
     .main-header {
-      padding: 14px 24px;
+      padding: 12px 20px;
       background: #1F1A12;
       border-bottom: 2px solid var(--unm-gold-dark);
       display: flex;
       justify-content: space-between;
       align-items: center;
       color: var(--unm-gold-light);
+      flex-shrink: 0;
+      gap: 10px;
     }
 
     .main-header h2 {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .main-header span {
+      font-size: 0.8rem;
+      opacity: 0.75;
+      white-space: nowrap;
     }
 
     #book {
@@ -106,8 +139,8 @@
       width: 100%;
       max-width: 1100px;
       margin: 0 auto;
-      height: calc(100vh - 60px);
       position: relative;
+      min-height: 0;
 
       --fb-bg: transparent;
       --fb-paper: #fffaf0;
@@ -116,7 +149,7 @@
       --fb-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
     }
 
-    /* ========== WELCOME SCREEN ========== */
+    /* ========== WELCOME ========== */
     .welcome {
       position: absolute;
       inset: 0;
@@ -125,107 +158,171 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 20px;
       z-index: 10;
       background: radial-gradient(ellipse at center, #3A2F1C 0%, #2C2416 70%);
     }
 
-    .welcome.hidden {
-      display: none;
-    }
+    .welcome.hidden { display: none; }
 
     .welcome img {
-      width: 140px;
+      width: 130px;
       height: auto;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4));
     }
 
     .welcome h1 {
-      font-size: 1.55rem;
+      font-size: 1.45rem;
       color: var(--unm-gold-light);
       margin-bottom: 10px;
       font-weight: 700;
-      letter-spacing: 0.3px;
     }
 
     .welcome p {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #cbb98a;
-      max-width: 420px;
       line-height: 1.5;
     }
 
     .welcome .hint {
-      margin-top: 28px;
-      font-size: 0.9rem;
+      margin-top: 24px;
+      font-size: 0.88rem;
       color: #e8d9b0;
       background: rgba(201, 162, 39, 0.15);
-      padding: 9px 20px;
+      padding: 9px 18px;
       border-radius: 30px;
       border: 1px solid var(--unm-gold-dark);
     }
 
-    /* Responsive */
+    /* ========== ANDROID / MOBILE ========== */
     @media (max-width: 768px) {
-      body { flex-direction: column; }
+      body {
+        flex-direction: column;
+        height: 100dvh;
+      }
+
       .sidebar {
         width: 100%;
         height: auto;
-        max-height: 240px;
+        max-height: 36vh;
+        border-right: none;
+        border-bottom: 2px solid var(--unm-gold-dark);
       }
-      .main { height: auto; min-height: 65vh; }
-      #book { height: 65vh; }
-      .welcome h1 { font-size: 1.25rem; }
-      .welcome img { width: 110px; }
+
+      .sidebar-header {
+        padding: 11px 14px;
+        font-size: 0.9rem;
+      }
+
+      .book-list {
+        padding: 8px 10px;
+      }
+
+      .book-item {
+        padding: 9px 11px;
+        margin-bottom: 5px;
+      }
+
+      .book-name {
+        font-size: 0.78rem;
+      }
+
+      .book-title {
+        font-size: 0.70rem;
+      }
+
+      .main-header {
+        padding: 9px 12px;
+      }
+
+      .main-header h2 {
+        font-size: 0.88rem;
+        max-width: 65%;
+      }
+
+      .main-header span {
+        font-size: 0.72rem;
+      }
+
+      #book {
+        height: auto;
+      }
+
+      .welcome img {
+        width: 95px;
+        margin-bottom: 14px;
+      }
+
+      .welcome h1 {
+        font-size: 1.15rem;
+      }
+
+      .welcome p {
+        font-size: 0.88rem;
+      }
+
+      .welcome .hint {
+        font-size: 0.78rem;
+        margin-top: 16px;
+        padding: 7px 14px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .sidebar { max-height: 34vh; }
+      .book-name { font-size: 0.74rem; }
+      .book-title { font-size: 0.66rem; }
+      .welcome h1 { font-size: 1.05rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ========== SIDEBAR ========== -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       📚 Orasi Ilmiah<br>
       Pengukuhan Profesor UNM<br>
-      <small style="font-weight:400; opacity:0.85">30 Juli 2026</small>
+      <small style="font-weight:400; opacity:0.85">Juli 2026</small>
     </div>
-    <div class="book-list" id="bookList">
-      <!-- diisi otomatis -->
-    </div>
+    <div class="book-list" id="bookList"></div>
   </aside>
 
-  <!-- ========== MAIN ========== -->
+  <!-- MAIN -->
   <main class="main">
     <div class="main-header">
       <h2 id="currentTitle">Selamat Datang</h2>
-      <span style="font-size: 0.85rem; opacity: 0.75;">Geser pojok halaman untuk membalik</span>
+      <span>Geser pojok halaman untuk membalik</span>
     </div>
 
     <div id="book">
-      <!-- Welcome screen -->
       <div class="welcome" id="welcomeScreen">
-        <img src="https://unm.ac.id/wp-content/uploads/2021/07/logo-unm.png" 
-             alt="Logo Universitas Negeri Makassar"
+        <img src="https://unm.ac.id/wp-content/uploads/2021/07/logo-unm.png"
+             alt="Logo UNM"
              onerror="this.src='https://upload.wikimedia.org/wikipedia/id/thumb/8/8e/Logo_UNM.png/200px-Logo_UNM.png'">
-        
         <h1>Orasi Ilmiah<br>Pengukuhan Profesor</h1>
-        <p>Universitas Negeri Makassar<br>30 Juli 2026</p>
-        <div class="hint">← Pilih naskah orasi di sebelah kiri untuk mulai membaca</div>
+        <p>Universitas Negeri Makassar<br>Juli 2026</p>
+        <div class="hint">← Pilih naskah orasi di sebelah kiri</div>
       </div>
     </div>
   </main>
 
-  <!-- Library -->
   <script src="https://cdn.jsdelivr.net/gh/SympleNZ/PDFlipbook@main/pdflipbook.js"></script>
-
   <script>
     const books = [
-      { title: "Prof. Sultan - Literasi Kritis di Era Infodemik",  file: "sultan.pdf" },
-      { title: "Prof. Kamaruddin - Neuro-Semiotic Pedagogy di Era AI",file: "kamaruddin.pdf" },
-      { title: "Prof. Erma Sahabuddin - Ekopedagogi Digital & Generasi Berkelanjutan",file: "erma.pdf" },
-      { title: "Prof. Widya Karmila Sari Achmad - Pedagogi Sosial Transformatif IPS SD",file: "widya.pdf" },
-      { title: "Prof. Maemuna Muhayyang  - Honorifik HI dalam Kesantunan Bugis",file: "maemuna.pdf" } 
+      //{ name: "1. Prof. Abdul Saman", title: "Psychological Well-Being Generasi Digital & FoMO", file: "abdulsaman.pdf" },
+      //{ name: "2. Prof. Abdullah Pandang", title: "Revitalisasi Kesantunan Berbahasa Generasi Z", file: "pandang.pdf" },
+      //{ name: "3. Prof. Farida Aryani", title: "From Screen to Soul: Konseling Digital", file: "farida.pdf" },
+      //{ name: "4. Prof. M. Rais", title: "Model Pembelajaran Transformatif Abad 21", file: "rais.pdf" },
+      //{ name: "5. Prof. Parwoto", title: "Collaborative Project Game & Kreativitas Anak", file: "parwoto.pdf" },
+      //{ name: "6. Prof. Suardi", title: "Reimajinasi Pendidikan Keluarga", file: "suardi.pdf" },
+      { name: "1. Prof. Sultan", title: "Literasi Kritis di Era Infodemik", file: "sultan.pdf" },
+      { name: "2. Prof. Kamaruddin", title: "Neuro-Semiotic Pedagogy di Era AI", file: "kamaruddin.pdf" },
+      { name: "3. Prof. Erma Suryani", title: "Ekopedagogi Digital & Generasi Berkelanjutan", file: "erma.pdf" },
+      { name: "4. Prof. Widya Karmila", title: "Pedagogi Sosial Transformatif IPS SD", file: "widya.pdf" }
+      { name: "5. Prof. Maemuna Muhayyang", title: "Honorifik HI dalam Kesantunan Bugis", file: "maemuna.pdf" },
+      
     ];
 
     let currentBook = null;
@@ -236,7 +333,10 @@
     books.forEach((book, index) => {
       const item = document.createElement('div');
       item.className = 'book-item';
-      item.textContent = book.title;
+      item.innerHTML = `
+        <div class="book-name">${book.name}</div>
+        <div class="book-title">${book.title}</div>
+      `;
       item.dataset.index = index;
 
       item.addEventListener('click', () => {
@@ -256,7 +356,7 @@
         currentBook = null;
       }
 
-      currentTitleEl.textContent = book.title;
+      currentTitleEl.textContent = book.name;
 
       currentBook = PDFlipbook.create(document.getElementById('book'), {
         url: book.file,
@@ -273,5 +373,3 @@
   </script>
 </body>
 </html>
-
-
