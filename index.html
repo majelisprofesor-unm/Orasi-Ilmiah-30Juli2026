@@ -358,6 +358,26 @@
       });
     }
 
+    // Tombol kembali ke halaman awal (slideshow)
+document.getElementById('btnHome').addEventListener('click', () => {
+  // Hapus flipbook jika ada
+  if (currentBook) {
+    currentBook.destroy();
+    currentBook = null;
+  }
+
+  // Hapus class active di daftar buku
+  document.querySelectorAll('.book-item').forEach(el => el.classList.remove('active'));
+
+  // Tampilkan kembali slideshow
+  slideshowEl.classList.remove('hidden');
+  currentTitleEl.textContent = 'Halaman Depan';
+
+  // Restart slideshow dari awal
+  slideIndex = 0;
+  showSlide(0);
+  startSlideshow();
+});
     // Jalankan slideshow saat halaman dibuka
     startSlideshow();
   </script>
